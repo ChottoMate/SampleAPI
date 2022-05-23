@@ -1,8 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -33,14 +34,12 @@ func main() {
 		log.Fatal(err)
 	}
 	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
+	body, _ := io.ReadAll(res.Body)
 	fmt.Println(string(body))
-	//var data []Response
+	var data Response
 
-	//if err := json.Unmarshal(body, &data); err != nil {
-	//	log.Fatal(err)
-	//}
-	//for _, v := range data {
-	//	fmt.Printf("%s %s %s\n", v.Staus, v.Message, v.Results[0])
-	//}
+	if err := json.Unmarshal(body, &data); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%+v\n", data)
 }
